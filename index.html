@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAKSH - Frontend Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #E5E7EB;
+            --card-bg-color: rgba(255, 255, 255, 0.03);
+            --card-border-color: rgba(255, 255, 255, 0.1);
+            --card-hover-border-color: rgba(255, 255, 255, 0.3);
+            --section-title-border: #374151;
+            --tag-bg-color: #374151;
+            --header-bg: rgba(10, 10, 10, 0.5);
+            --gradient-start: rgba(31, 41, 55, 0.5);
+            --gradient-end: #0a0a0a;
+        }
+
+        html.light {
+            --bg-color: #f3f4f6;
+            --text-color: #111827;
+            --card-bg-color: rgba(255, 255, 255, 0.7);
+            --card-border-color: rgba(0, 0, 0, 0.1);
+            --card-hover-border-color: rgba(0, 0, 0, 0.2);
+            --section-title-border: #d1d5db;
+            --tag-bg-color: #e5e7eb;
+            --header-bg: rgba(243, 244, 246, 0.5);
+            --gradient-start: rgba(209, 213, 219, 0.5);
+            --gradient-end: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at top, var(--gradient-start), var(--gradient-end) 70%);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .section-title {
+            border-bottom: 2px solid var(--section-title-border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--card-border-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--card-hover-border-color);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.05);
+        }
+        .tag {
+            background-color: var(--tag-bg-color);
+        }
+        html.light .tag {
+             color: #1f2937;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: #9CA3AF;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: var(--text-color);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-opacity-50 backdrop-blur-lg sticky top-0 z-50 transition-shadow duration-300" id="header" style="background-color: var(--header-bg);">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-wider">DAKSH</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-gray-500 dark:text-gray-300">About</a>
+                <a href="#skills" class="nav-link text-gray-500 dark:text-gray-300">Skills</a>
+                <a href="#projects" class="nav-link text-gray-500 dark:text-gray-300">Projects</a>
+                <a href="#education" class="nav-link text-gray-500 dark:text-gray-300">Education</a>
+                <a href="#contact" class="nav-link text-gray-500 dark:text-gray-300">Contact</a>
+                <button id="theme-toggle" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 016.465 3.636l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 010-1.414zM5 11a1 1 0 100-2H4a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4" style="background-color: var(--bg-color);">
+            <a href="#about" class="block py-2">About</a>
+            <a href="#skills" class="block py-2">Skills</a>
+            <a href="#projects" class="block py-2">Projects</a>
+            <a href="#education" class="block py-2">Education</a>
+            <a href="#contact" class="block py-2">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Hero Section -->
+        <section id="home" class="text-center min-h-[70vh] flex flex-col justify-center items-center">
+            <h1 class="text-6xl md:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-200 dark:to-gray-500">DAKSH</h1>
+            <p class="text-xl md:text-2xl mt-4">
+                <span id="typing-effect"></span><span class="typed-cursor">|</span>
+            </p>
+            <div class="mt-10 flex justify-center items-center space-x-6">
+                <a href="https://linkedin.com/in/daksh-yadav-5839b1188" target="_blank" class="transition-transform duration-300 hover:scale-110">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                </a>
+                <a href="https://github.com/Amateur-Daksh" target="_blank" class="transition-transform duration-300 hover:scale-110">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Career Objective -->
+        <section id="about" class="py-24 reveal">
+            <h2 class="text-3xl font-bold text-center section-title">Career Objective</h2>
+            <p class="max-w-3xl mx-auto text-center leading-relaxed text-lg">
+                Aspiring Frontend Engineer and pre-final year Computer Science student seeking an opportunity to apply strong foundations in React.js, JavaScript, and UI/UX design to build impactful digital products. Eager to contribute to innovative, user-centric solutions in a fast-paced environment while learning from industry professionals and growing within a collaborative tech culture.
+            </p>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills" class="py-24 reveal">
+            <h2 class="text-3xl font-bold text-center section-title">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Languages</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">JavaScript (ES6+)</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">HTML5</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">CSS3</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Python</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">C++</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Java</span>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Frontend</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">React.js</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Bootstrap</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Tailwind CSS</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Responsive Design</span>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">UI/UX & Tools</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">Figma</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Wireframing</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Prototyping</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Git & GitHub</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Chrome DevTools</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">VS Code</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Postman</span>
+                    </div>
+                </div>
+                 <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Other</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">REST APIs</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Agile Basics</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Microsoft Azure (Beginner)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="py-24 reveal">
+            <h2 class="text-3xl font-bold text-center section-title">Projects</h2>
+            <div class="space-y-12">
+                <div class="card p-8 rounded-lg">
+                    <h3 class="text-2xl font-bold">VitaMeet – Doctor Appointment Booking System</h3>
+                    <p class="text-sm mb-4 opacity-70">Sept 2024 – Dec 2024</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Customized and extended a GitHub-based project to build a doctor appointment system, supporting 24/7 online booking and reducing no-shows by up to 30%.</li>
+                        <li>Implemented role-based dashboards for patients, doctors, and admins, improving booking efficiency by 60%.</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">React.js</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Bootstrap</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Node.js</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Express.js</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">MongoDB</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">REST APIs</span>
+                    </div>
+                </div>
+                <div class="card p-8 rounded-lg">
+                    <h3 class="text-2xl font-bold">Pinterest Clone: Responsive Web Application</h3>
+                    <p class="text-sm mb-4 opacity-70">Mar 2024 – May 2024</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Built a responsive UI/UX web application inspired by Pinterest to boost user engagement by up to 20%.</li>
+                        <li>Added features like image upload, authentication, and real-time feeds, reducing page load time by 25%.</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">React.js</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Firebase</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">MongoDB</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Responsive Design</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Real-Time DB</span>
+                    </div>
+                </div>
+                <div class="card p-8 rounded-lg">
+                    <h3 class="text-2xl font-bold">Uniscore: Data Normalization and Predictive Analytics</h3>
+                    <p class="text-sm mb-4 opacity-70">Jan 2024 – Mar 2024</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Designed a data normalization and automation pipeline for India Post recruitment, reducing manual effort by 30%.</li>
+                        <li>Engineered predictive ML models that improved shortlisting accuracy by 25% and streamlined backend operations.</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag rounded-md px-3 py-1 text-sm">Python</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">OpenCV</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Flask</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">Machine Learning</span>
+                        <span class="tag rounded-md px-3 py-1 text-sm">System Automation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Certifications -->
+        <section id="education" class="py-24 reveal">
+             <h2 class="text-3xl font-bold text-center section-title">Education & Certifications</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Education</h3>
+                    <div class="space-y-6">
+                        <div class="card p-6 rounded-lg">
+                            <p class="text-sm opacity-70">Aug 2022 – Present</p>
+                            <h4 class="font-bold">BE in Computer Science</h4>
+                            <p>Chandigarh University</p>
+                            <p class="opacity-70">CGPA: 7.6/10</p>
+                        </div>
+                         <div class="card p-6 rounded-lg">
+                            <p class="text-sm opacity-70">Apr 2021 – Apr 2022</p>
+                            <h4 class="font-bold">Intermediate (CBSE)</h4>
+                            <p>Kendriya Vidyalaya No.1, Patiala</p>
+                            <p class="opacity-70">Percentage: 87%</p>
+                        </div>
+                         <div class="card p-6 rounded-lg">
+                            <p class="text-sm opacity-70">Apr 2019 – Apr 2020</p>
+                            <h4 class="font-bold">Matriculation (CBSE)</h4>
+                            <p>DAV Public School, Patiala</p>
+                            <p class="opacity-70">Percentage: 80%</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Certifications</h3>
+                    <div class="space-y-4">
+                        <div class="card p-4 rounded-lg"><p class="font-semibold">Cloud Computing – IIT Kharagpur</p></div>
+                        <div class="card p-4 rounded-lg"><p class="font-semibold">Databases and SQL for Data Science with Python – IBM via Coursera</p></div>
+                        <div class="card p-4 rounded-lg"><p class="font-semibold">Advanced Blockchain Development – Infosys Springboard</p></div>
+                        <div class="card p-4 rounded-lg"><p class="font-semibold">Introduction to Hardware and Operating Systems – IBM</p></div>
+                        <div class="card p-4 rounded-lg"><p class="font-semibold">Multicore Computer Architecture – IIT Guwahati</p></div>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- Achievements -->
+        <section id="achievements" class="py-24 reveal">
+            <h2 class="text-3xl font-bold text-center section-title">Achievements & Extracurricular</h2>
+            <div class="max-w-4xl mx-auto">
+                <ul class="list-none space-y-4">
+                    <li class="card p-4 rounded-lg flex items-center"><svg class="w-5 h-5 mr-4 flex-shrink-0 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg><p><span class="font-semibold">Academic Excellence:</span> Second Position in Class 12 Examinations.</p></li>
+                    <li class="card p-4 rounded-lg flex items-center"><svg class="w-5 h-5 mr-4 flex-shrink-0 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg><p><span class="font-semibold">Leadership:</span> TPP CR for 5th and 6th semester, leading teams effectively.</p></li>
+                    <li class="card p-4 rounded-lg flex items-center"><svg class="w-5 h-5 mr-4 flex-shrink-0 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg><p><span class="font-semibold">Event Management:</span> Anchored and organized university technical and cultural events.</p></li>
+                    <li class="card p-4 rounded-lg flex items-center"><svg class="w-5 h-5 mr-4 flex-shrink-0 text-red-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg><p><span class="font-semibold">Competitions & Sports:</span> Represented in inter-department basketball and sketching competitions.</p></li>
+                    <li class="card p-4 rounded-lg flex items-center"><svg class="w-5 h-5 mr-4 flex-shrink-0 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg><p><span class="font-semibold">Creativity:</span> Skilled in video editing, animation, and digital content creation.</p></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="py-24 text-center reveal">
+            <h2 class="text-4xl font-bold">Get In Touch</h2>
+            <p class="mt-4 max-w-xl mx-auto opacity-70">I'm currently seeking new opportunities. If you have a project in mind or just want to connect, feel free to reach out.</p>
+            <div class="mt-8">
+                <a href="mailto:16vansh16@gmail.com" class="inline-block bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-400 dark:to-gray-200 text-white dark:text-gray-900 font-bold py-4 px-10 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105">
+                    Email Me
+                </a>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-transparent border-t border-opacity-30" style="border-color: var(--section-title-border);">
+        <div class="container mx-auto px-6 py-6 text-center opacity-50">
+             <div class="flex justify-center items-center space-x-6 mb-4">
+                <a href="https://linkedin.com/in/daksh-yadav-5839b1188" target="_blank" class="hover:opacity-100 transition-opacity">LinkedIn</a>
+                <a href="https://github.com/Amateur-Daksh" target="_blank" class="hover:opacity-100 transition-opacity">GitHub</a>
+            </div>
+            <p>&copy; 2024 DAKSH. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            // Check for saved theme in localStorage or system preference
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeToggleLightIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                themeToggleDarkIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                // toggle icons inside button
+                themeToggleDarkIcon.classList.toggle('hidden');
+                themeToggleLightIcon.classList.toggle('hidden');
+
+                // if set via local storage previously
+                if (localStorage.getItem('theme')) {
+                    if (localStorage.getItem('theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        document.documentElement.classList.remove('light');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        document.documentElement.classList.add('light');
+                        localStorage.setItem('theme', 'light');
+                    }
+                // if NOT set via local storage previously
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        document.documentElement.classList.add('light');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        document.documentElement.classList.remove('light');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Typing effect
+            const typingElement = document.getElementById('typing-effect');
+            const text = "Aspiring Frontend Engineer";
+            let index = 0;
+            function type() {
+                if (index < text.length) {
+                    typingElement.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, 100);
+                }
+            }
+            type();
+
+            // Scroll animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Header shadow on scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('shadow-lg', 'shadow-black/20');
+                } else {
+                    header.classList.remove('shadow-lg', 'shadow-black/20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
