@@ -375,6 +375,68 @@
     </footer>
 
     <script>
+        // Loader greetings
+         const greetings = [
+            "Hola", "Hello", "Namaste", "Bonjour", "Ciao", "こんにちは", "안녕하세요", "مرحبا", "नमस्कार", "Salam", "Hallo"
+        ];
+        let greetIndex = 0;
+        const loaderGreeting = document.getElementById('loader-greeting');
+        const loader = document.getElementById('loader');
+        document.body.style.overflow = 'hidden';
+
+        function showNextGreeting() {
+            loaderGreeting.textContent = greetings[greetIndex];
+            greetIndex = (greetIndex + 1) % greetings.length;
+        }
+
+        let greetInterval = setInterval(showNextGreeting, 120);
+        showNextGreeting();
+
+        let loaderDuration = greetings.length * 120 + 400;
+        setTimeout(() => {
+            clearInterval(greetInterval);
+            loader.classList.add('translate-y-[-100vh]', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+            loader.style.display = 'none';
+            }, 700);
+        }, loaderDuration);   
+
+
+        //chatbot        
+        (function () {
+            if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+                window.chatbase = (...arguments) => {
+                    if (!window.chatbase.q) {
+                        window.chatbase.q = [];
+                    }
+                    window.chatbase.q.push(arguments);
+                };
+                window.chatbase = new Proxy(window.chatbase, {
+                    get(target, prop) {
+                        if (prop === "q") {
+                            return target.q;
+                        }
+                        return (...args) => target(prop, ...args);
+                    }
+                });
+            }
+            const onLoad = function () {
+                const script = document.createElement("script");
+                script.src = "https://www.chatbase.co/embed.min.js";
+                script.id = "i1Rl5B35oy-P652jK3QoL";
+                script.domain = "www.chatbase.co";
+                document.body.appendChild(script);
+            };
+            if (document.readyState === "complete") {
+                onLoad();
+            } else {
+                window.addEventListener("load", onLoad);
+            }
+        })();
+
+
+
         document.addEventListener('DOMContentLoaded', () => {
             const themeToggleBtn = document.getElementById('theme-toggle');
             const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
